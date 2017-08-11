@@ -23,6 +23,7 @@ module Devise
 
       included do
         after_update :send_password_change_notification, if: :send_password_change_notification?
+        after_update :send_email_changed_notification, if: :send_email_changed_notification?
 
         attr_reader :password, :current_password
         attr_accessor :password_confirmation
@@ -136,6 +137,9 @@ module Devise
         send_devise_notification(:password_change)
       end
 
+      def send_email_changed_notification
+        send_devise_notification(:email_changed)
+      end
     protected
 
       # Hashes the password using bcrypt. Custom hash functions should override
@@ -151,8 +155,13 @@ module Devise
         self.class.send_password_change_notification && encrypted_password_changed?
       end
 
+      def send_email_changed_notification?
+        self.class.send_email_changed_notification && uid_changed?
+      end
+
       module ClassMethods
         Devise::Models.config(self, :pepper, :stretches, :send_password_change_notification)
+        Devise::Models.config(self, :pepper, :stretches, :send_email_changed_notification)
 
         # We assume this method already gets the sanitized values from the
         # DatabaseAuthenticatable strategy. If you are using this method on
