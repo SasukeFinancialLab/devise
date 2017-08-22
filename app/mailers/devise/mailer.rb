@@ -24,5 +24,9 @@ if defined?(ActionMailer)
     def email_changed(record, opts={})
       devise_mail(record, :email_changed, opts)
     end
+
+    def thank_after_confirmed(record, opts={})
+      devise_mail(record, :thank_after_confirmed, opts)
+    end
   end
 end

@@ -117,6 +117,11 @@ module Devise
         send_devise_notification(:confirmation_instructions, @raw_confirmation_token, opts)
       end
 
+      # Send thanks email after confirmation
+      def send_thank_after_confirmed
+        send_devise_notification(:thank_after_confirmed)
+      end
+
       def send_reconfirmation_instructions
         @reconfirmation_required = false
 
