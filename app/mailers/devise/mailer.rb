@@ -22,7 +22,10 @@ if defined?(ActionMailer)
     end
 
     def email_changed(record, opts={})
-      devise_mail(record, :email_changed, opts)
+      puts "Old email: #{record.email}"
+      new_record = record.class.find record.id
+      puts "New email: #{new_record.email}"
+      devise_mail(new_record, :email_changed, opts)
     end
 
     def thank_after_confirmed(record, opts={})
